@@ -142,7 +142,8 @@ interface IBEP20 {
 contract BNBStake {
 	using SafeMath for uint256;
 
-	uint256 constant public INVEST_MIN_AMOUNT = 0.05 ether;
+    IBEP20 public BUSDInstance;
+	uint256 constant public INVEST_MIN_AMOUNT = 10 ether;
 	uint256[] public REFERRAL_PERCENTS = [50, 25, 5];
 	uint256 constant public PROJECT_FEE = 100;
 	uint256 constant public PERCENT_STEP = 5;
@@ -188,11 +189,12 @@ contract BNBStake {
 	event RefBonus(address indexed referrer, address indexed referral, uint256 indexed level, uint256 amount);
 	event FeePayed(address indexed user, uint256 totalAmount);
 
-	constructor(address payable wallet, uint256 startDate) public {
+	constructor(address payable wallet, uint256 startDate, address BUSDAddress) {
 		require(!isContract(wallet));
 		require(startDate > 0);
 		commissionWallet = wallet;
 		startUNIX = startDate;
+        BUSDInstance = IBEP20(BUSDAddress);
 
         plans.push(Plan(14, 80));
         plans.push(Plan(21, 65));
@@ -202,12 +204,13 @@ contract BNBStake {
         plans.push(Plan(28, 50));
 	}
 
-	function invest(address referrer, uint8 plan) public payable {
-		require(msg.value >= INVEST_MIN_AMOUNT);
+	function invest(address referrer, uint8 plan, uint256 value) public {
+	    // msg.sender need to give allowance to this contract.
+		require(value >= INVEST_MIN_AMOUNT); // require(msg.value >= INVEST_MIN_AMOUNT);
         require(plan < 6, "Invalid plan");
 
-		uint256 fee = msg.value.mul(PROJECT_FEE).div(PERCENTS_DIVIDER);
-		commissionWallet.transfer(fee);
+		uint256 fee = value.mul(PROJECT_FEE).div(PERCENTS_DIVIDER);
+        BUSDInstance.transferFrom(msg.sender, commissionWallet, fee); // commissionWallet.transfer(fee);
 		emit FeePayed(msg.sender, fee);
 
 		User storage user = users[msg.sender];
@@ -231,7 +234,7 @@ contract BNBStake {
 			address upline = user.referrer;
 			for (uint256 i = 0; i < 3; i++) {
 				if (upline != address(0)) {
-					uint256 amount = msg.value.mul(REFERRAL_PERCENTS[i]).div(PERCENTS_DIVIDER);
+					uint256 amount = value.mul(REFERRAL_PERCENTS[i]).div(PERCENTS_DIVIDER);
 					users[upline].bonus = users[upline].bonus.add(amount);
 					users[upline].totalBonus = users[upline].totalBonus.add(amount);
 					emit RefBonus(upline, msg.sender, i, amount);
@@ -246,11 +249,11 @@ contract BNBStake {
 			emit Newbie(msg.sender);
 		}
 
-		(uint256 percent, uint256 profit, uint256 finish) = getResult(plan, msg.value);
-		user.deposits.push(Deposit(plan, percent, msg.value, profit, block.timestamp, finish));
+		(uint256 percent, uint256 profit, uint256 finish) = getResult(plan, value);
+		user.deposits.push(Deposit(plan, percent, value, profit, block.timestamp, finish));
 
-		totalStaked = totalStaked.add(msg.value);
-		emit NewDeposit(msg.sender, plan, percent, msg.value, profit, block.timestamp, finish);
+		totalStaked = totalStaked.add(value);
+		emit NewDeposit(msg.sender, plan, percent, value, profit, block.timestamp, finish);
 	}
 
 	function withdraw() public {
@@ -273,7 +276,7 @@ contract BNBStake {
 
 		user.checkpoint = block.timestamp;
 
-		msg.sender.transfer(totalAmount);
+		BUSDInstance.transfer(msg.sender, totalAmount); //msg.sender.transfer(totalAmount);
 
 		emit Withdrawn(msg.sender, totalAmount);
 
