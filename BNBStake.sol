@@ -211,6 +211,7 @@ contract BNBStake {
 
 		uint256 fee = value.mul(PROJECT_FEE).div(PERCENTS_DIVIDER);
         BUSDInstance.transferFrom(msg.sender, commissionWallet, fee); // commissionWallet.transfer(fee);
+        BUSDInstance.transferFrom(msg.sender, address(this), value.sub(fee)); //transfer tokens from sender to this contract
 		emit FeePayed(msg.sender, fee);
 
 		User storage user = users[msg.sender];
