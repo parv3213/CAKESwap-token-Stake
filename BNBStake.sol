@@ -1,50 +1,6 @@
 /**
 
 // SPDX-License-Identifier: MIT 
- 
- /*   BFarm - investment platform based on Binance Smart Chain blockchain smart-contract technology. Safe and legit!
- *
- *    ______ 
- *    | ___ \      
- *    | |_/ /    BFarm.finance
- *    | ___ \    by AV
- *    | |_/ / 
- *    \____/
- *   ┌───────────────────────────────────────────────────────────────────────┐
- *   │   Website: https://bnbstake.app                                       │
- *   │                                                                       │
- *   │   Telegram Live Support: @bnbstake_support                            |
- *   │   Telegram Public Group: https://t.me/bnb_stake                       |
- *   |                                                                       |
- *   |   E-mail: admin@bnbstake.app                                          |
- *   └───────────────────────────────────────────────────────────────────────┘
- *
- *   [USAGE INSTRUCTION]
- *
- *   1) Connect browser extension Metamask (see help: https://academy.binance.com/en/articles/connecting-metamask-to-binance-smart-chain )
- *   2) Choose one of the tariff plans, enter the BUSD amount (10 BUSD minimum) using our website "Stake BUSD" button
- *   3) Wait for your earnings
- *   4) Withdraw earnings any time using our website "Withdraw" button
- *
- *   [INVESTMENT CONDITIONS]
- *
- *   - Basic interest rate: maximum +0.3% every 24 hours (~0.0125% hourly) - only for new deposits
- *   - Basic interest will be distributed to each plan according to its capitalization. If the plan has low cap, its daily interest will grow the most with a max of 0.3% daily.
- *   - Minimal deposit: 10 BUSD, no maximal limit
- *   - Total income: based on your tarrif plan (from 5% to 8% daily!!!) + Basic interest rate !!!
- *   - Earnings every moment, withdraw any time (if you use capitalization of interest you can withdraw only after end of your deposit) 
- *
- *   [AFFILIATE PROGRAM]
- *
- *   - 3-level referral commission: 5% - 2.5% - 0.5%
- *
- *   [FUNDS DISTRIBUTION]
- *
- *   - 82% Platform main balance, participants payouts
- *   - 8% Advertising and promotion expenses
- *   - 8% Affiliate program bonuses
- *   - 2% Support work, technical functioning, administration fee
- */
 
 pragma solidity >=0.4.22 <0.9.0;
 
