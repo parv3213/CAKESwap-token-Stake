@@ -206,7 +206,7 @@ contract BNBStake {
 
 	function invest(address referrer, uint8 plan, uint256 value) public {
 	    // msg.sender need to give allowance to this contract.
-		require(value >= INVEST_MIN_AMOUNT); // require(msg.value >= INVEST_MIN_AMOUNT);
+		require(value >= INVEST_MIN_AMOUNT, "Value less than required"); // require(msg.value >= INVEST_MIN_AMOUNT);
         require(plan < 6, "Invalid plan");
 
 		uint256 fee = value.mul(PROJECT_FEE).div(PERCENTS_DIVIDER);
