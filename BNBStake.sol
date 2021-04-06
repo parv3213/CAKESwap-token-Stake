@@ -1,13 +1,11 @@
-/**
-
 // SPDX-License-Identifier: MIT 
 
 pragma solidity >=0.4.22 <0.9.0;
 
 interface IBEP20 {
   /**
-   * @dev Returns the amount of tokens in existence.
-   */
+  * @dev Returns the amount of tokens in existence.
+  */
   function totalSupply() external view returns (uint256);
 
   /**
@@ -226,7 +224,7 @@ contract BNBStake {
 
 		require(totalAmount > 0, "User has no dividends");
 
-		uint256 contractBalance = BUSDInstance.balanceOf(this);
+		uint256 contractBalance = BUSDInstance.balanceOf(address(this));
 		if (contractBalance < totalAmount) {
 			totalAmount = contractBalance;
 		}
